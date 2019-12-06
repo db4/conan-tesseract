@@ -79,6 +79,25 @@ class TesseractConan(ConanFile):
                 "else()\n"
                 "set_target_properties           (libtesseract PROPERTIES OUTPUT_NAME tesseract)\n")
 
+        tools.replace_in_file(
+            os.path.join(self._source_subfolder, "CMakeListsOriginal.txt"),
+            "set_target_properties           (libtesseract PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS True)",
+            "set_target_properties           (libtesseract PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS True)\n"
+            "elseif(MSVC)\n"
+            "   target_compile_options      (libtesseract PRIVATE -Zi -Fdlib/libtesseract)\n"
+        )
+
+        tools.replace_in_file(
+            os.path.join(self._source_subfolder, "CMakeListsOriginal.txt"),
+            "install(TARGETS libtesseract EXPORT TesseractTargets RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)",
+            "install(TARGETS libtesseract EXPORT TesseractTargets RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)\n"
+            "if (STATIC)\n"
+            "    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/lib/libtesseract.pdb DESTINATION lib OPTIONAL)\n"
+            "else()\n"
+            "    install(FILES $<TARGET_PDB_FILE:libtesseract> DESTINATION bin OPTIONAL)\n"
+            "endif()\n"
+        )
+
         if not use_pkg_config:
             cmake.definitions['Leptonica_DIR'] = self.deps_cpp_info['leptonica'].rootpath
 
