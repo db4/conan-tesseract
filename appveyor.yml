@@ -3,6 +3,9 @@ build: false
 environment:
     PYTHON: "C:\\Python37"
 
+    CONAN_ARCHS: "x86,x86_64"
+    CONAN_VISUAL_RUNTIMES: "MD,MDd"
+
     matrix:
         # does not work for Visual Studio 2013 (dev12)
         #- APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
