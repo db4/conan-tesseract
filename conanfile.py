@@ -79,6 +79,14 @@ class TesseractConan(ConanFile):
                 "else()\n"
                 "set_target_properties           (libtesseract PROPERTIES OUTPUT_NAME tesseract)\n")
 
+        if self.settings.compiler == "Visual Studio":
+            # Without this Debug build does not succeed in an hour
+            tools.replace_in_file(
+                os.path.join(self._source_subfolder, "CMakeListsOriginal.txt"),
+                "${CMAKE_CXX_FLAGS_DEBUG} /Wall",
+                "${CMAKE_CXX_FLAGS_DEBUG}"
+            )
+
         tools.replace_in_file(
             os.path.join(self._source_subfolder, "CMakeListsOriginal.txt"),
             "set_target_properties           (libtesseract PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS True)",
