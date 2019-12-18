@@ -84,7 +84,7 @@ class TesseractConan(ConanFile):
             tools.replace_in_file(
                 os.path.join(self._source_subfolder, "CMakeListsOriginal.txt"),
                 "${CMAKE_CXX_FLAGS_DEBUG} /Wall",
-                "${CMAKE_CXX_FLAGS_DEBUG}"
+                "${CMAKE_CXX_FLAGS_DEBUG} /W4"
             )
 
         tools.replace_in_file(
