@@ -8,7 +8,7 @@ from conans import ConanFile, CMake, tools
 
 class TesseractConan(ConanFile):
     name = "tesseract"
-    version = "4.1.1-rc2"
+    version = "4.1.1"
     description = "Tesseract Open Source OCR Engine"
     url = "http://github.com/bincrafters/conan-tesseract"
     author = "Bincrafters <bincrafters@gmail.com>"
@@ -78,14 +78,6 @@ class TesseractConan(ConanFile):
                 "set_target_properties           (libtesseract PROPERTIES DEBUG_OUTPUT_NAME tesseract${VERSION_MAJOR}${VERSION_MINOR}d)\n"
                 "else()\n"
                 "set_target_properties           (libtesseract PROPERTIES OUTPUT_NAME tesseract)\n")
-
-        if self.settings.compiler == "Visual Studio":
-            # Without this Debug build does not succeed in an hour
-            tools.replace_in_file(
-                os.path.join(self._source_subfolder, "CMakeListsOriginal.txt"),
-                "${CMAKE_CXX_FLAGS_DEBUG} /Wall",
-                "${CMAKE_CXX_FLAGS_DEBUG} /W4"
-            )
 
         tools.replace_in_file(
             os.path.join(self._source_subfolder, "CMakeListsOriginal.txt"),
